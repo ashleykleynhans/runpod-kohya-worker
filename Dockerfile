@@ -1,5 +1,5 @@
 # Base image
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu20.04
+FROM 12.1.1-cudnn8-runtime-ubuntu22.04
 
 # Use bash shell with pipefail option
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -10,6 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /
 
 # Install system packages, clone repo, and cache models
+ARG CIVITAI_TOKEN
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y software-properties-common && \
@@ -25,7 +26,7 @@ RUN git clone https://github.com/kohya-ss/sd-scripts.git && \
     cd sd-scripts && \
     git checkout 25f961bc779bc79aef440813e3e8e92244ac5739
 RUN mkdir -p /model_cache && \
-    wget "https://civitai.com/api/download/models/292213?type=Model&format=SafeTensor&size=full&fp=fp16&token=f0c45ab699375d6a70ba7ab65c867765" -O /model_cache/hyperRealism_30.safetensors
+    wget "https://civitai.com/api/download/models/292213?type=Model&format=SafeTensor&size=full&fp=fp16&token=${CIVITAI_TOKEN}" -O /model_cache/hyperRealism_30.safetensors
 
 # Install Python dependencies (Worker Template)
 COPY /requirements.txt /requirements.txt

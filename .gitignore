@@ -163,3 +163,4 @@ cython_debug/
 src/reg/man/**/*
 src/reg/woman/**/*
 output/
+.idea
