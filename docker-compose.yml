@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  runpod-training-worker:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: runpod-training-worker
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - SERVE_API_LOCALLY=true
+    volumes:
+      - ./output:/sd-scripts/training
+    runtime: nvidia
